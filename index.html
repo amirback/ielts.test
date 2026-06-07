@@ -325,6 +325,12 @@
 
     .btn-stack { display: flex; flex-direction: column; gap: 8px; }
 
+    /* Quiz nav: back + next side by side */
+    .quiz-nav         { display: flex; gap: 8px; }
+    .quiz-nav #btn-next { flex: 1; }
+    .quiz-nav #btn-prev { flex: 0 0 auto; width: auto; }
+    .quiz-nav #btn-prev[hidden] { display: none; }
+
     /* =============================================
        QUIZ SCREEN
        ============================================= */
@@ -826,7 +832,15 @@
     <div class="container">
       <div class="quiz-body">
         <div id="question-area"></div>
-        <div class="btn-stack">
+        <div class="quiz-nav">
+          <button class="btn btn-outline" id="btn-prev" onclick="prevQuestion()" hidden>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="square">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="11,18 5,12 11,6"/>
+            </svg>
+            <span id="btn-prev-text" data-i18n="quiz.prev">Back</span>
+          </button>
           <button class="btn btn-black" id="btn-next" onclick="nextQuestion()" disabled>
             <span id="btn-next-text" data-i18n="quiz.next">Next Question</span>
             <svg class="btn-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none"
@@ -934,6 +948,7 @@
         'start.m':            'Minutes',
         'start.cta':          'Begin Test',
         'quiz.next':          'Next Question',
+        'quiz.prev':          'Back',
         'quiz.finish':        'Get Result',
         'quiz.exit':          'Exit',
         'result.kicker':      'Your CEFR Level',
@@ -964,6 +979,7 @@
         'start.m':            'Минут',
         'start.cta':          'Начать тест',
         'quiz.next':          'Следующий вопрос',
+        'quiz.prev':          'Назад',
         'quiz.finish':        'Получить результат',
         'quiz.exit':          'Выход',
         'result.kicker':      'Ваш уровень CEFR',
@@ -1495,6 +1511,7 @@
     let currentIdx      = 0;
     let picked          = null;
     let score           = 0;
+    let answers         = [];
     let activePassage   = null;
     let activeQuestions = [];
     const MAX_SCORE     = 41;
@@ -1544,6 +1561,7 @@
       picked          = null;
       score           = 0;
       activeQuestions = buildQuiz();
+      answers         = new Array(activeQuestions.length).fill(null);
       showScreen('screen-quiz');
       renderQuestion();
     }
@@ -1553,7 +1571,7 @@
        ============================================= */
     function renderQuestion() {
       const q = activeQuestions[currentIdx];
-      picked  = null;
+      picked  = answers[currentIdx];
 
       const pct = (currentIdx / activeQuestions.length) * 100;
       document.getElementById('prog-fill').style.width = pct + '%';
@@ -1561,10 +1579,15 @@
         `${t(SEC_KEY[q.section])} · ${currentIdx + 1} / 15`;
 
       const btnNext = document.getElementById('btn-next');
-      btnNext.disabled = true;
+      btnNext.disabled = (picked === null);
       const isLast = currentIdx === activeQuestions.length - 1;
       document.getElementById('btn-next-text').textContent =
         isLast ? t('quiz.finish') : t('quiz.next');
+
+      const btnPrev = document.getElementById('btn-prev');
+      document.getElementById('btn-prev-text').textContent = t('quiz.prev');
+      if (currentIdx > 0) btnPrev.removeAttribute('hidden');
+      else btnPrev.setAttribute('hidden', '');
 
       const letters = ['A','B','C','D'];
       const opts    = q.options[lang]  || q.options.en;
@@ -1598,6 +1621,10 @@
       html += `</div></div>`;
 
       document.getElementById('question-area').innerHTML = html;
+
+      if (picked !== null) {
+        document.getElementById('opt' + picked)?.classList.add('selected');
+      }
     }
 
     /* =============================================
@@ -1605,6 +1632,7 @@
        ============================================= */
     function pickAnswer(i) {
       picked = i;
+      answers[currentIdx] = i;
       document.querySelectorAll('.opt').forEach((b, j) =>
         b.classList.toggle('selected', j === i)
       );
@@ -1614,9 +1642,12 @@
     /* =============================================
        ADVANCE
        ============================================= */
+    function prevQuestion() {
+      if (currentIdx > 0) { currentIdx--; renderQuestion(); }
+    }
+
     function nextQuestion() {
-      if (picked === null) return;
-      if (picked === activeQuestions[currentIdx].correct) score += activeQuestions[currentIdx].points;
+      if (answers[currentIdx] === null) return;
       currentIdx++;
       if (currentIdx >= activeQuestions.length) showResult();
       else renderQuestion();
@@ -1637,6 +1668,9 @@
        SHOW RESULT
        ============================================= */
     function showResult() {
+      score = activeQuestions.reduce(
+        (s, q, i) => s + (answers[i] === q.correct ? q.points : 0), 0
+      );
       const level   = computeLevel(score);
       const data    = LEVELS[level];
       const comment = data.comment[lang] || data.comment.en;
