@@ -40,7 +40,8 @@
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
-    button { font-family: inherit; }
+    button { font-family: inherit; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    a      { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 
     /* =============================================
        FIXED HEADER
@@ -590,17 +591,116 @@
     /* =============================================
        MOBILE
        ============================================= */
+
+    /* Active-state feedback for touch (hover doesn't fire on mobile) */
+    @media (hover: none) {
+      .opt:hover                    { border-color: var(--ink-12); }
+      .opt:hover .opt-ltr           { background: transparent; border-color: var(--ink-12); color: var(--black); }
+      .opt:active                   { border-color: var(--black); }
+      .opt:active .opt-ltr          { background: var(--black); border-color: var(--black); color: var(--white); }
+      .btn-black:hover              { background: var(--black); }
+      .btn-black:active             { background: var(--red); }
+      .btn-outline:hover            { background: transparent; color: var(--black); }
+      .btn-outline:active           { background: var(--black); color: var(--white); }
+      .btn-ghost:hover              { border-color: var(--ink-12); color: var(--ink-40); }
+      .btn-ghost:active             { border-color: var(--black); color: var(--black); }
+      .exit-btn:hover               { color: var(--ink-40); }
+      .exit-btn:active              { color: var(--red); }
+    }
+
     @media (max-width: 480px) {
-      .header              { padding: 0 16px; }
-      .progress-strip      { padding: 10px 16px; }
-      .container           { padding: 0 16px; }
-      .q-card              { padding: 20px 16px; }
-      .result-hero         { padding: 26px 18px 22px; }
-      .result-hero::after  { font-size: 5rem; }
-      .start-headline      { font-size: clamp(2.4rem, 10vw, 3.2rem); }
-      .opt                 { padding: 14px 14px; font-size: 0.95rem; }
-      .section-row         { flex-direction: column; gap: 4px; }
-      .section-row-name    { width: auto; }
+      html { font-size: 16px; }
+
+      /* Header */
+      .header         { padding: 0 16px; height: 48px; }
+      .logo-word      { letter-spacing: 0.10em; }
+
+      /* Progress strip */
+      .progress-strip { padding: 8px 16px; top: 48px; }
+      .progress-meta  { font-size: 0.62rem; }
+      .exit-btn       { font-size: 0.62rem; }
+
+      /* Adjust quiz body top padding (48px header + ~36px strip + 16px gap) */
+      .quiz-body      { padding-top: 108px; padding-bottom: 100px; }
+
+      /* Result body */
+      .result-body    { padding-top: 68px; padding-bottom: 80px; }
+
+      /* Start body */
+      .start-body     { padding-top: 76px; padding-bottom: 60px; }
+
+      /* Container */
+      .container      { padding: 0 14px; }
+
+      /* Headline */
+      .start-headline { font-size: clamp(2.2rem, 11vw, 3rem); letter-spacing: -0.03em; margin-bottom: 20px; }
+      .start-desc     { font-size: 0.95rem; margin-bottom: 32px; }
+
+      /* Stats */
+      .stat           { padding: 18px 8px; }
+      .stat-num       { font-size: 2.4rem; }
+      .stat-lbl       { font-size: 0.65rem; letter-spacing: 0.08em; }
+
+      /* Section rows */
+      .section-list   { margin-bottom: 32px; }
+      .section-row    { flex-direction: column; gap: 4px; padding: 12px 14px; }
+      .section-row-name { min-width: auto; }
+      .section-row-detail { font-size: 0.85rem; }
+
+      /* Quiz card */
+      .q-card         { padding: 16px 14px; }
+
+      /* Passage */
+      .passage-box    { padding: 12px 12px; margin-bottom: 16px; }
+      .passage-body   { max-height: 150px; font-size: 0.88rem; line-height: 1.7;
+                        -webkit-overflow-scrolling: touch; }
+
+      /* Question text */
+      .q-text         { font-size: 1rem; line-height: 1.55; margin-bottom: 18px; }
+
+      /* Options */
+      .options-list   { gap: 7px; }
+      .opt            { padding: 13px 12px; font-size: 0.93rem; gap: 10px; min-height: 52px; }
+      .opt-ltr        { width: 28px; height: 28px; font-size: 0.65rem; flex-shrink: 0; }
+
+      /* Buttons */
+      .btn            { padding: 16px 18px; font-size: 0.84rem; }
+
+      /* Result hero */
+      .result-hero              { padding: 22px 14px 18px; }
+      .result-hero::after       { font-size: 4.5rem; bottom: -10px; right: -2px; }
+      .result-cefr              { font-size: clamp(3.5rem, 14vw, 5rem); }
+      .result-band              { font-size: 1.1rem; }
+
+      /* CEFR scale */
+      .scale-block    { padding: 14px 14px; }
+      .scale-nm       { font-size: 0.58rem; letter-spacing: 0; }
+
+      /* Comment block */
+      .comment-block  { padding: 16px 14px; margin-bottom: 14px; }
+      .comment-block p { font-size: 0.92rem; line-height: 1.7; }
+
+      /* Toast */
+      .toast          { font-size: 0.75rem; padding: 10px 18px; bottom: 20px; }
+    }
+
+    /* Extra small (320px iPhones) */
+    @media (max-width: 360px) {
+      .start-headline { font-size: clamp(1.9rem, 12vw, 2.4rem); }
+      .stat-num       { font-size: 2rem; }
+      .progress-meta  { display: none; }
+    }
+
+    /* Safe area for iPhone notch / home indicator */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      .quiz-body, .result-body, .start-body {
+        padding-bottom: calc(80px + env(safe-area-inset-bottom));
+      }
+      @media (max-width: 480px) {
+        .quiz-body, .result-body, .start-body {
+          padding-bottom: calc(60px + env(safe-area-inset-bottom));
+        }
+      }
     }
   </style>
 </head>
