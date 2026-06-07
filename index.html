@@ -30,7 +30,7 @@
 
     /* ===== RESET ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; }
+    html { font-size: 17px; }
     body {
       background: var(--white);
       color: var(--black);
@@ -169,12 +169,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.68rem;
+      font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--red);
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     /* 2D dash icon inline */
@@ -192,10 +192,10 @@
     .start-headline em { font-style: normal; color: var(--red); }
 
     .start-desc {
-      font-size: 0.95rem;
+      font-size: 1.1rem;
       line-height: 1.65;
       color: var(--ink-40);
-      max-width: 460px;
+      max-width: 520px;
       margin-bottom: 44px;
     }
 
@@ -209,23 +209,56 @@
 
     .stat + .stat { border-left: 1px solid var(--black); }
 
-    .stat { padding: 20px 14px; text-align: center; }
+    .stat { padding: 28px 14px; text-align: center; }
 
     .stat-num {
       display: block;
-      font-size: 2.2rem;
+      font-size: 3rem;
       font-weight: 900;
       letter-spacing: -0.05em;
       line-height: 1;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .stat-lbl {
-      font-size: 0.67rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--ink-40);
+    }
+
+    /* Section breakdown list on start screen */
+    .section-list {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--black);
+      border-top: none;
+      margin-bottom: 44px;
+    }
+
+    .section-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--ink-12);
+    }
+
+    .section-row-name {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black);
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .section-row-detail {
+      font-size: 0.9rem;
+      color: var(--ink-40);
+      line-height: 1.5;
     }
 
     /* =============================================
@@ -237,9 +270,9 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 15px 20px;
+      padding: 18px 24px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.9rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -327,10 +360,10 @@
     }
 
     .passage-body {
-      font-size: 0.84rem;
+      font-size: 0.94rem;
       line-height: 1.8;
       color: var(--ink-40);
-      max-height: 190px;
+      max-height: 200px;
       overflow-y: auto;
       padding-right: 6px;
     }
@@ -340,25 +373,25 @@
     .passage-body::-webkit-scrollbar-thumb { background: var(--ink-40); }
 
     .q-text {
-      font-size: clamp(0.92rem, 2.5vw, 1.02rem);
+      font-size: clamp(1.05rem, 3vw, 1.2rem);
       font-weight: 600;
       line-height: 1.6;
       color: var(--black);
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
-    .options-list { display: flex; flex-direction: column; gap: 7px; }
+    .options-list { display: flex; flex-direction: column; gap: 8px; }
 
     .opt {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       width: 100%;
-      padding: 13px 14px;
+      padding: 16px 18px;
       background: transparent;
       border: 1px solid var(--ink-12);
       font-family: 'Inter', sans-serif;
-      font-size: 0.88rem;
+      font-size: 1rem;
       font-weight: 500;
       color: var(--black);
       cursor: pointer;
@@ -367,11 +400,11 @@
     }
 
     .opt-ltr {
-      width: 26px; height: 26px;
+      width: 32px; height: 32px;
       border: 1px solid var(--ink-12);
       display: grid;
       place-items: center;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.04em;
       flex-shrink: 0;
@@ -429,15 +462,15 @@
     }
 
     .result-band {
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--black);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .result-band strong { color: var(--red); }
 
-    .result-pts { font-size: 0.78rem; color: var(--ink-40); font-weight: 500; }
+    .result-pts { font-size: 0.9rem; color: var(--ink-40); font-weight: 500; }
 
     /* CEFR scale */
     .scale-block {
@@ -447,12 +480,12 @@
     }
 
     .scale-lbl-top {
-      font-size: 0.63rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink-40);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .scale-track-grid {
@@ -462,7 +495,7 @@
       margin-bottom: 7px;
     }
 
-    .scale-seg { height: 4px; background: var(--ink-12); }
+    .scale-seg { height: 6px; background: var(--ink-12); }
     .scale-seg.active { background: var(--red); }
     .scale-seg.past   { background: rgba(217,0,18,0.28); }
 
@@ -473,7 +506,7 @@
     }
 
     .scale-nm {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.06em;
       color: var(--ink-40);
@@ -491,17 +524,17 @@
     }
 
     .comment-block h3 {
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--black);
-      padding-bottom: 12px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--ink-12);
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
-    .comment-block p { font-size: 0.9rem; line-height: 1.7; color: var(--ink-40); }
+    .comment-block p { font-size: 1rem; line-height: 1.75; color: var(--ink-40); }
 
     /* =============================================
        TOAST
@@ -529,13 +562,16 @@
        MOBILE
        ============================================= */
     @media (max-width: 480px) {
-      .header         { padding: 0 16px; }
-      .progress-strip { padding: 10px 16px; }
-      .container      { padding: 0 16px; }
-      .q-card         { padding: 18px 14px; }
-      .result-hero    { padding: 26px 18px 22px; }
-      .result-hero::after { font-size: 5rem; }
-      .start-headline { font-size: clamp(2.2rem, 8vw, 3rem); }
+      .header              { padding: 0 16px; }
+      .progress-strip      { padding: 10px 16px; }
+      .container           { padding: 0 16px; }
+      .q-card              { padding: 20px 16px; }
+      .result-hero         { padding: 26px 18px 22px; }
+      .result-hero::after  { font-size: 5rem; }
+      .start-headline      { font-size: clamp(2.4rem, 10vw, 3.2rem); }
+      .opt                 { padding: 14px 14px; font-size: 0.95rem; }
+      .section-row         { flex-direction: column; gap: 4px; }
+      .section-row-name    { width: auto; }
     }
   </style>
 </head>
@@ -611,6 +647,22 @@
           <div class="stat">
             <span class="stat-num">10</span>
             <span class="stat-lbl" data-i18n="start.m">Minutes</span>
+          </div>
+        </div>
+
+        <!-- Section breakdown -->
+        <div class="section-list">
+          <div class="section-row">
+            <span class="section-row-name" data-i18n="sec.grammar">Grammar</span>
+            <span class="section-row-detail" data-i18n="start.sec.grammar">Tenses · Conditionals · Passive voice · Reported speech · Subjunctive</span>
+          </div>
+          <div class="section-row">
+            <span class="section-row-name" data-i18n="sec.vocab">Vocabulary</span>
+            <span class="section-row-detail" data-i18n="start.sec.vocab">Synonyms · Academic collocations · Word meaning in context</span>
+          </div>
+          <div class="section-row">
+            <span class="section-row-name" data-i18n="sec.reading">Reading</span>
+            <span class="section-row-detail" data-i18n="start.sec.reading">Main idea · Detail · Inference · Writer's attitude</span>
           </div>
         </div>
 
@@ -754,12 +806,15 @@
         'pts.label':     'Score',
         'pts.of':        'of',
         'pts.unit':      'points',
-        'sec.grammar':   'Grammar',
-        'sec.vocab':     'Vocabulary',
-        'sec.reading':   'Reading',
-        'passage.lbl':   'Read the passage',
-        'share.text':    'My IELTS level: {CEFR} ({BAND}) — check yours at ieltstest.app',
-        'toast.copied':  'Copied to clipboard',
+        'sec.grammar':        'Grammar',
+        'sec.vocab':          'Vocabulary',
+        'sec.reading':        'Reading',
+        'start.sec.grammar':  'Tenses · Conditionals · Passive voice · Reported speech · Subjunctive',
+        'start.sec.vocab':    'Synonyms · Academic collocations · Word meaning in context',
+        'start.sec.reading':  'Main idea · Detail · Inference · Writer\'s attitude',
+        'passage.lbl':        'Read the passage',
+        'share.text':         'My IELTS level: {CEFR} ({BAND}) — check yours at ieltstest.app',
+        'toast.copied':       'Copied to clipboard',
       },
       ru: {
         'brand':         'IELTS Тест',
@@ -780,10 +835,13 @@
         'pts.label':     'Баллов',
         'pts.of':        'из',
         'pts.unit':      '',
-        'sec.grammar':   'Грамматика',
-        'sec.vocab':     'Лексика',
-        'sec.reading':   'Чтение',
-        'passage.lbl':   'Прочитайте текст',
+        'sec.grammar':        'Грамматика',
+        'sec.vocab':          'Лексика',
+        'sec.reading':        'Чтение',
+        'start.sec.grammar':  'Времена · Условные предложения · Пассивный залог · Косвенная речь · Сослагательное',
+        'start.sec.vocab':    'Синонимы · Академические коллокации · Значение слова в контексте',
+        'start.sec.reading':  'Основная мысль · Детали · Умозаключение · Позиция автора',
+        'passage.lbl':        'Прочитайте текст',
         'share.text':    'Мой уровень IELTS: {CEFR} ({BAND}) — проверь свой на ieltstest.app',
         'toast.copied':  'Скопировано',
       }
