@@ -598,115 +598,135 @@
        MOBILE
        ============================================= */
 
-    /* Active-state feedback for touch (hover doesn't fire on mobile) */
+    /* ── Touch: swap hover→active on pointer-less devices ── */
     @media (hover: none) {
-      .opt:hover                    { border-color: var(--ink-12); }
-      .opt:hover .opt-ltr           { background: transparent; border-color: var(--ink-12); color: var(--black); }
-      .opt:active                   { border-color: var(--black); }
-      .opt:active .opt-ltr          { background: var(--black); border-color: var(--black); color: var(--white); }
-      .btn-black:hover              { background: var(--black); }
-      .btn-black:active             { background: var(--red); }
-      .btn-outline:hover            { background: transparent; color: var(--black); }
-      .btn-outline:active           { background: var(--black); color: var(--white); }
-      .btn-ghost:hover              { border-color: var(--ink-12); color: var(--ink-40); }
-      .btn-ghost:active             { border-color: var(--black); color: var(--black); }
-      .exit-btn:hover               { color: var(--ink-40); }
-      .exit-btn:active              { color: var(--red); }
+      .opt:hover                { border-color: var(--ink-12); }
+      .opt:hover .opt-ltr       { background: transparent; border-color: var(--ink-12); color: var(--black); }
+      .opt:active               { border-color: var(--black); }
+      .opt:active .opt-ltr      { background: var(--black); border-color: var(--black); color: var(--white); }
+      .opt.selected:active .opt-ltr { background: var(--red); border-color: var(--red); }
+      .btn-black:hover          { background: var(--black); }
+      .btn-black:active         { background: var(--red); }
+      .btn-outline:hover        { background: transparent; color: var(--black); }
+      .btn-outline:active       { background: var(--black); color: var(--white); }
+      .btn-ghost:hover          { border-color: var(--ink-12); color: var(--ink-40); }
+      .btn-ghost:active         { border-color: var(--black); color: var(--black); }
+      .exit-btn:hover           { color: var(--ink-40); }
+      .exit-btn:active          { color: var(--red); }
     }
 
+    /* ── Main mobile breakpoint ── */
     @media (max-width: 480px) {
       html { font-size: 16px; }
 
-      /* Header */
-      .header         { padding: 0 16px; height: 48px; }
-      .logo-word      { letter-spacing: 0.10em; }
+      /* ---- Header ---- */
+      .header    { padding: 0 16px; height: 48px; }
+      .logo-mark { width: 26px; height: 26px; }
+      .logo-word { font-size: 0.72rem; letter-spacing: 0.10em; }
 
-      /* Progress strip */
-      .progress-strip { padding: 8px 16px; top: 48px; }
-      .progress-meta  { font-size: 0.62rem; }
-      .exit-btn       { font-size: 0.62rem; }
+      /* ---- Progress strip ---- */
+      .progress-strip  { padding: 7px 16px; top: 48px; }
+      .progress-inner  { gap: 10px; }
+      .progress-meta   { font-size: 0.6rem; letter-spacing: 0.07em; }
+      .exit-btn        { font-size: 0.6rem; gap: 4px; }
 
-      /* Adjust quiz body top padding (48px header + ~36px strip + 16px gap) */
-      .quiz-body      { padding-top: 108px; padding-bottom: 100px; }
+      /* ---- Screen top padding (header 48 + strip ~34 + gap 12) ---- */
+      .quiz-body   { padding-top: 104px; padding-bottom: 88px; }
+      .result-body { padding-top: 66px;  padding-bottom: 40px; }
+      .start-body  { padding-top: 72px;  padding-bottom: 32px; }
 
-      /* Result body */
-      .result-body    { padding-top: 68px; padding-bottom: 80px; }
+      /* ---- Container ---- */
+      .container { padding: 0 14px; }
 
-      /* Start body */
-      .start-body     { padding-top: 76px; padding-bottom: 60px; }
+      /* ---- Start screen ---- */
+      .eyebrow        { margin-bottom: 16px; font-size: 0.72rem; }
+      .start-headline { font-size: clamp(2.1rem, 11vw, 2.8rem); letter-spacing: -0.03em;
+                        margin-bottom: 16px; }
+      .start-desc     { font-size: 0.9rem; line-height: 1.6; margin-bottom: 28px; }
 
-      /* Container */
-      .container      { padding: 0 14px; }
+      /* Stats: tighter cells */
+      .stat     { padding: 16px 6px; }
+      .stat-num { font-size: 2.2rem; margin-bottom: 4px; }
+      .stat-lbl { font-size: 0.62rem; letter-spacing: 0.07em; }
 
-      /* Headline */
-      .start-headline { font-size: clamp(2.2rem, 11vw, 3rem); letter-spacing: -0.03em; margin-bottom: 20px; }
-      .start-desc     { font-size: 0.95rem; margin-bottom: 32px; }
+      /* Section list */
+      .section-list       { margin-bottom: 28px; }
+      .section-row        { flex-direction: column; gap: 3px; padding: 11px 14px; }
+      .section-row-name   { min-width: auto; font-size: 0.7rem; }
+      .section-row-detail { font-size: 0.82rem; line-height: 1.5; }
 
-      /* Stats */
-      .stat           { padding: 18px 8px; }
-      .stat-num       { font-size: 2.4rem; }
-      .stat-lbl       { font-size: 0.65rem; letter-spacing: 0.08em; }
+      /* Start CTA */
+      .btn { padding: 17px 18px; font-size: 0.82rem; }
 
-      /* Section rows */
-      .section-list   { margin-bottom: 32px; }
-      .section-row    { flex-direction: column; gap: 4px; padding: 12px 14px; }
-      .section-row-name { min-width: auto; }
-      .section-row-detail { font-size: 0.85rem; }
+      /* ---- Quiz card ---- */
+      .q-meta   { margin-bottom: 12px; }
+      .q-card   { padding: 16px 14px 18px; margin-bottom: 10px; }
 
-      /* Quiz card */
-      .q-card         { padding: 16px 14px; }
-
-      /* Passage */
-      .passage-box    { padding: 12px 12px; margin-bottom: 16px; }
-      .passage-body   { max-height: 150px; font-size: 0.88rem; line-height: 1.7;
-                        -webkit-overflow-scrolling: touch; }
+      /* Passage — full height, let page scroll instead of inner box scroll */
+      .passage-box  { padding: 12px 13px; margin-bottom: 16px; }
+      .passage-body { max-height: none; overflow-y: visible;
+                      font-size: 0.87rem; line-height: 1.72; }
 
       /* Question text */
-      .q-text         { font-size: 1rem; line-height: 1.55; margin-bottom: 18px; }
+      .q-text { font-size: 0.97rem; line-height: 1.58; margin-bottom: 16px; }
 
-      /* Options */
-      .options-list   { gap: 7px; }
-      .opt            { padding: 13px 12px; font-size: 0.93rem; gap: 10px; min-height: 52px; }
-      .opt-ltr        { width: 28px; height: 28px; font-size: 0.65rem; flex-shrink: 0; }
+      /* Options — align badge to top so it doesn't float mid-line on wrap */
+      .options-list { gap: 6px; }
+      .opt          { padding: 14px 13px; font-size: 0.92rem; gap: 11px;
+                      min-height: 54px; align-items: flex-start; }
+      .opt-ltr      { width: 28px; height: 28px; font-size: 0.64rem;
+                      flex-shrink: 0; margin-top: 1px; }
 
-      /* Buttons */
-      .btn            { padding: 16px 18px; font-size: 0.84rem; }
+      /* ---- Quiz navigation — fixed at bottom ---- */
+      .quiz-nav {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        padding: 10px 14px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        background: var(--white);
+        border-top: 1px solid var(--black);
+        z-index: 150;
+        gap: 8px;
+      }
+      /* Extra quiz-body clearance for the fixed nav bar */
+      .quiz-body { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
 
-      /* Result hero */
-      .result-hero              { padding: 22px 14px 18px; }
-      .result-hero::after       { font-size: 4.5rem; bottom: -10px; right: -2px; }
-      .result-cefr              { font-size: clamp(3.5rem, 14vw, 5rem); }
-      .result-band              { font-size: 1.1rem; }
+      /* ---- Result screen ---- */
+      .result-hero        { padding: 22px 14px 18px; }
+      .result-hero::after { font-size: 4.2rem; bottom: -8px; right: -2px; }
+      .result-cefr        { font-size: clamp(3.2rem, 14vw, 4.8rem); }
+      .result-band        { font-size: 1.05rem; }
+      .result-pts         { font-size: 0.84rem; }
 
       /* CEFR scale */
-      .scale-block    { padding: 14px 14px; }
-      .scale-nm       { font-size: 0.58rem; letter-spacing: 0; }
+      .scale-block   { padding: 14px 14px; }
+      .scale-nm      { font-size: 0.56rem; letter-spacing: 0; }
 
-      /* Comment block */
-      .comment-block  { padding: 16px 14px; margin-bottom: 14px; }
-      .comment-block p { font-size: 0.92rem; line-height: 1.7; }
+      /* Comment */
+      .comment-block   { padding: 16px 14px; margin-bottom: 14px; }
+      .comment-block h3{ font-size: 0.72rem; }
+      .comment-block p { font-size: 0.9rem; line-height: 1.72; }
 
-      /* Toast */
-      .toast          { font-size: 0.75rem; padding: 10px 18px; bottom: 20px; }
+      /* Result buttons: stack full width */
+      .result-body .btn-stack { gap: 8px; }
+
+      /* Toast sits above the fixed nav on quiz screen */
+      .toast { font-size: 0.74rem; padding: 10px 18px; bottom: 80px; }
     }
 
-    /* Extra small (320px iPhones) */
+    /* ── 360 px and below (iPhone SE, older Androids) ── */
     @media (max-width: 360px) {
-      .start-headline { font-size: clamp(1.9rem, 12vw, 2.4rem); }
-      .stat-num       { font-size: 2rem; }
+      html            { font-size: 15px; }
+      .start-headline { font-size: clamp(1.85rem, 12vw, 2.2rem); }
+      .stat-num       { font-size: 1.9rem; }
+      .stat-lbl       { display: none; }           /* very tight – numbers speak for themselves */
       .progress-meta  { display: none; }
+      .opt            { font-size: 0.88rem; padding: 12px 11px; }
     }
 
-    /* Safe area for iPhone notch / home indicator */
+    /* ── Safe area for iPhone notch / home indicator (desktop too) ── */
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
-      .quiz-body, .result-body, .start-body {
-        padding-bottom: calc(80px + env(safe-area-inset-bottom));
-      }
-      @media (max-width: 480px) {
-        .quiz-body, .result-body, .start-body {
-          padding-bottom: calc(60px + env(safe-area-inset-bottom));
-        }
-      }
+      body { padding-bottom: env(safe-area-inset-bottom); }
     }
   </style>
 </head>
@@ -1570,6 +1590,7 @@
        RENDER QUESTION
        ============================================= */
     function renderQuestion() {
+      window.scrollTo({ top: 0, behavior: 'instant' });
       const q = activeQuestions[currentIdx];
       picked  = answers[currentIdx];
 
