@@ -139,6 +139,25 @@
       white-space: nowrap;
     }
 
+    .exit-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-40);
+      background: none;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      padding: 0;
+      transition: color var(--trans);
+    }
+
+    .exit-btn:hover { color: var(--red); }
+
     .progress-track {
       flex: 1;
       height: 2px;
@@ -244,8 +263,8 @@
 
     .section-row {
       display: flex;
-      align-items: baseline;
-      gap: 16px;
+      align-items: flex-start;
+      gap: 20px;
       padding: 16px 20px;
       border-top: 1px solid var(--ink-12);
     }
@@ -256,14 +275,15 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--black);
-      width: 90px;
+      min-width: 110px;
       flex-shrink: 0;
+      padding-top: 2px;
     }
 
     .section-row-detail {
       font-size: 0.9rem;
       color: var(--ink-40);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     /* =============================================
@@ -618,7 +638,15 @@
       <div class="progress-track">
         <div class="progress-fill" id="prog-fill" style="width:0%"></div>
       </div>
-      <span class="progress-meta" id="prog-count">1/15</span>
+      <button class="exit-btn" onclick="restartQuiz()" id="exit-btn">
+        <span data-i18n="quiz.exit">Exit</span>
+        <!-- 2D X icon -->
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="square">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -807,6 +835,7 @@
         'start.cta':     'Begin Test',
         'quiz.next':     'Next Question',
         'quiz.finish':   'Get Result',
+        'quiz.exit':     'Exit',
         'result.kicker': 'Your CEFR Level',
         'result.scale':  'Your position on the CEFR scale',
         'result.share':  'Share Result',
@@ -836,6 +865,7 @@
         'start.cta':     'Начать тест',
         'quiz.next':     'Следующий вопрос',
         'quiz.finish':   'Получить результат',
+        'quiz.exit':     'Выход',
         'result.kicker': 'Ваш уровень CEFR',
         'result.scale':  'Ваша позиция по шкале CEFR',
         'result.share':  'Поделиться результатом',
