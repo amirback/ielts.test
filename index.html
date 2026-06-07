@@ -1679,8 +1679,8 @@
       else btnPrev.setAttribute('hidden', '');
 
       const letters = ['A','B','C','D'];
-      const opts    = q.options[lang]  || q.options.ru  || q.options.en;
-      const qText   = q.question[lang] || q.question.ru || q.question.en;
+      const opts    = q.options.en;
+      const qText   = q.question.en;
 
       let html = `
         <div class="q-meta">
@@ -1691,7 +1691,7 @@
         <div class="q-card">`;
 
       if (q.passage) {
-        const paras = (activePassage[lang] || activePassage.ru || activePassage.en).map(p => `<p>${p}</p>`).join('');
+        const paras = activePassage.en.map(p => `<p>${p}</p>`).join('');
         html += `
           <div class="passage-box">
             <div class="passage-label">${t('passage.lbl')}</div>
