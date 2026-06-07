@@ -748,6 +748,68 @@
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
       body { padding-bottom: env(safe-area-inset-bottom); }
     }
+
+    /* =============================================
+       CERTIFICATE MODAL
+       ============================================= */
+    .cert-overlay {
+      position: fixed; inset: 0;
+      background: rgba(12,12,12,0.88);
+      z-index: 400;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 52px 20px 40px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cert-overlay.open { display: flex; }
+
+    .cert-box {
+      background: var(--white);
+      border: 1px solid var(--black);
+      width: 100%;
+      max-width: 940px;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .cert-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .cert-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    .cert-close-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px;
+      background: none; border: 1px solid var(--ink-12); cursor: pointer;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: border-color var(--trans), background var(--trans);
+    }
+    .cert-close-btn:hover { border-color: var(--black); }
+    .cert-close-btn:active { background: var(--ink-06); }
+
+    .cert-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--ink-12); }
+    #cert-canvas { display: block; }
+
+    .cert-foot { display: flex; gap: 8px; margin-top: 12px; }
+    .cert-foot .btn-black { flex: 1; }
+    .cert-foot .btn-ghost  { flex: 0 0 auto; }
+
+    @media (max-width: 480px) {
+      .cert-overlay { padding: 48px 14px calc(80px + env(safe-area-inset-bottom)); }
+      .cert-box     { padding: 14px; }
+    }
   </style>
 </head>
 <body>
@@ -971,6 +1033,44 @@
   <div class="toast" id="toast"></div>
 
   <!-- =============================================
+       CERTIFICATE MODAL
+       ============================================= -->
+  <div class="cert-overlay" id="cert-overlay">
+    <div class="cert-box">
+
+      <div class="cert-head">
+        <span class="cert-label" data-i18n="cert.title">Your Certificate</span>
+        <button class="cert-close-btn" onclick="closeCertModal()" aria-label="Close">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="square">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="cert-scroll">
+        <canvas id="cert-canvas"></canvas>
+      </div>
+
+      <div class="cert-foot">
+        <button class="btn btn-black" onclick="downloadCert()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="square">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7,10 12,15 17,10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span data-i18n="cert.dl">Download PNG</span>
+        </button>
+        <button class="btn btn-ghost" onclick="closeCertModal()">
+          <span data-i18n="cert.close">Close</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =============================================
        JAVASCRIPT
        ============================================= -->
   <script>
@@ -994,9 +1094,12 @@
         'quiz.exit':          'Exit',
         'result.kicker':      'Your CEFR Level',
         'result.scale':       'Your position on the CEFR scale',
-        'result.share':       'Share Result',
+        'result.share':       'Get Certificate',
         'result.prep':        'Start Preparation',
         'result.retake':      'Retake Test',
+        'cert.title':         'Your Certificate',
+        'cert.dl':            'Download PNG',
+        'cert.close':         'Close',
         'pts.label':          'Score',
         'pts.of':             'of',
         'pts.unit':           'points',
@@ -1025,9 +1128,12 @@
         'quiz.exit':          'Выход',
         'result.kicker':      'Ваш уровень CEFR',
         'result.scale':       'Ваша позиция по шкале CEFR',
-        'result.share':       'Поделиться результатом',
+        'result.share':       'Получить сертификат',
         'result.prep':        'Начать подготовку',
         'result.retake':      'Пройти снова',
+        'cert.title':         'Ваш сертификат',
+        'cert.dl':            'Скачать PNG',
+        'cert.close':         'Закрыть',
         'pts.label':          'Баллов',
         'pts.of':             'из',
         'pts.unit':           '',
@@ -1056,9 +1162,12 @@
         'quiz.exit':          'Шығу',
         'result.kicker':      'Сіздің CEFR деңгейіңіз',
         'result.scale':       'CEFR шкаласындағы орыңыз',
-        'result.share':       'Нәтижені бөлісу',
+        'result.share':       'Сертификат алу',
         'result.prep':        'Дайындықты бастау',
         'result.retake':      'Тестті қайталау',
+        'cert.title':         'Сіздің сертификатыңыз',
+        'cert.dl':            'PNG жүктеу',
+        'cert.close':         'Жабу',
         'pts.label':          'Балл',
         'pts.of':             'ішінен',
         'pts.unit':           '',
@@ -1799,23 +1908,203 @@
     /* =============================================
        SHARE RESULT
        ============================================= */
-    function shareResult() {
-      const level = computeLevel(score);
-      const data  = LEVELS[level];
-      const text  = t('share.text').replace('{CEFR}', data.cefr).replace('{BAND}', data.band);
+    /* =============================================
+       CERTIFICATE
+       ============================================= */
+    function shareResult() { openCertModal(); }
 
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => showToast(t('toast.copied')));
-      } else {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showToast(t('toast.copied'));
-      }
+    async function openCertModal() {
+      document.getElementById('cert-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      applyI18n();
+      await drawCertificate();
+    }
+
+    function closeCertModal() {
+      document.getElementById('cert-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function downloadCert() {
+      const level = computeLevel(score);
+      const a = document.createElement('a');
+      a.download = `IELTS-${LEVELS[level].cefr}-KazStudioLearn.png`;
+      a.href = document.getElementById('cert-canvas').toDataURL('image/png');
+      a.click();
+    }
+
+    async function drawCertificate() {
+      const level   = computeLevel(score);
+      const data    = LEVELS[level];
+      const comment = data.comment.en;
+
+      /* Load fonts into canvas context */
+      try {
+        await Promise.all([
+          document.fonts.load('900 120px "Inter"'),
+          document.fonts.load('800 12px "Inter"'),
+          document.fonts.load('400 13px "Inter"'),
+        ]);
+      } catch(e) { /* system font fallback */ }
+
+      const W = 900, H = 600, DPR = 2;
+      const canvas = document.getElementById('cert-canvas');
+      canvas.width  = W * DPR;
+      canvas.height = H * DPR;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+
+      const ctx = canvas.getContext('2d');
+      ctx.scale(DPR, DPR);
+
+      /* ── Colours ── */
+      const BK  = '#0C0C0C';
+      const WH  = '#FFFFFF';
+      const RD  = '#D90012';
+      const I40 = 'rgba(12,12,12,0.40)';
+      const I12 = 'rgba(12,12,12,0.12)';
+
+      const BAR  = 56;   /* red top bar height   */
+      const FOOT = 46;   /* black footer height  */
+      const SPLIT= 456;  /* left / right x split */
+      const LP   = 40;   /* left padding         */
+
+      /* ── 1. White background ── */
+      ctx.fillStyle = WH;
+      ctx.fillRect(0, 0, W, H);
+
+      /* ── 2. Dot grid on left panel (matches site aesthetic) ── */
+      ctx.fillStyle = 'rgba(12,12,12,0.09)';
+      const DS = 22;
+      for (let x = DS; x < SPLIT - 6; x += DS)
+        for (let y = BAR + DS; y < H - FOOT - 6; y += DS) {
+          ctx.beginPath();
+          ctx.arc(x, y, 0.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+      /* ── 3. Red top bar ── */
+      ctx.fillStyle = RD;
+      ctx.fillRect(0, 0, W, BAR);
+
+      /* ── 4. Logo mark (white square, K letter inside) ── */
+      const MX = 28, MY = BAR / 2 - 8, MS = 16;
+      ctx.fillStyle = WH;
+      ctx.fillRect(MX, MY, MS, MS);
+      ctx.fillStyle = RD;
+      ctx.font = '900 9.5px "Inter",Arial,sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('K', MX + MS / 2, MY + MS / 2 + 0.5);
+
+      /* ── 5. Brand name ── */
+      ctx.fillStyle = WH;
+      ctx.font = '800 10.5px "Inter",Arial,sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText('KAZSTUDIOLEARN', MX + MS + 8, BAR / 2);
+
+      /* ── 6. Date (right side of bar) ── */
+      const dateStr = new Date().toLocaleDateString('en-GB',
+        { day: 'numeric', month: 'long', year: 'numeric' });
+      ctx.font = '500 10px "Inter",Arial,sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(dateStr, W - LP, BAR / 2);
+      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+
+      /* ── 7. Outer border ── */
+      ctx.strokeStyle = BK; ctx.lineWidth = 1.5;
+      ctx.strokeRect(0.75, 0.75, W - 1.5, H - 1.5);
+
+      /* ── 8. Column divider ── */
+      ctx.strokeStyle = I12; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(SPLIT, BAR + 24); ctx.lineTo(SPLIT, H - FOOT - 24);
+      ctx.stroke();
+
+      /* ══ LEFT COLUMN ══ */
+      let y = BAR + 44;
+
+      ctx.fillStyle = I40;
+      ctx.font = '700 8px "Inter",Arial,sans-serif';
+      ctx.fillText('FREE ACADEMIC ASSESSMENT', LP, y);
+
+      y += 11;
+      ctx.fillStyle = RD;
+      ctx.fillRect(LP, y, 182, 1.5);
+
+      y += 20;
+      ctx.fillStyle = BK;
+      ctx.font = '800 18px "Inter",Arial,sans-serif';
+      ctx.fillText('IELTS Academic', LP, y); y += 24;
+      ctx.fillText('Placement Test', LP, y);
+
+      y += 26;
+      ctx.fillStyle = I40;
+      ctx.font = '600 8.5px "Inter",Arial,sans-serif';
+      ctx.fillText('CERTIFICATE OF COMPLETION', LP, y);
+
+      y += 26;
+      ctx.fillStyle = I40;
+      ctx.font = '400 12.5px "Inter",Arial,sans-serif';
+      ['This certifies the successful',
+       'completion of the IELTS Academic',
+       'Placement Assessment.'].forEach(ln => { ctx.fillText(ln, LP, y); y += 19; });
+
+      y += 16;
+      ctx.fillStyle = 'rgba(12,12,12,0.28)';
+      ctx.font = '700 7.5px "Inter",Arial,sans-serif';
+      ctx.fillText('CEFR LEVEL', LP, y);
+
+      y += 14;
+      ctx.fillStyle = BK;
+      ctx.font = '700 12.5px "Inter",Arial,sans-serif';
+      comment.title.split(' — ').forEach(p => { ctx.fillText(p, LP, y); y += 17; });
+
+      /* ══ RIGHT COLUMN ══ */
+      const RCX = SPLIT + (W - SPLIT) / 2;
+      const midY = BAR + (H - BAR - FOOT) / 2;
+
+      /* Large CEFR glyph */
+      const fs = data.cefr.length > 2 ? 88 : 114;
+      ctx.fillStyle = BK;
+      ctx.font = `900 ${fs}px "Inter",Arial,sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(data.cefr, RCX, midY - 18);
+
+      /* Separator */
+      const sepY = midY + fs / 2 - 8;
+      ctx.strokeStyle = I12; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(SPLIT + 32, sepY); ctx.lineTo(W - 32, sepY);
+      ctx.stroke();
+
+      /* Band */
+      ctx.fillStyle = RD;
+      ctx.font = '700 10px "Inter",Arial,sans-serif';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText('IELTS BAND  ' + data.band, RCX, sepY + 20);
+
+      /* Score */
+      ctx.fillStyle = I40;
+      ctx.font = '400 9.5px "Inter",Arial,sans-serif';
+      ctx.fillText(`Score: ${score} of ${MAX_SCORE} points`, RCX, sepY + 38);
+
+      ctx.textAlign = 'left';
+
+      /* ── Black footer ── */
+      ctx.fillStyle = BK;
+      ctx.fillRect(0, H - FOOT, W, FOOT);
+
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(255,255,255,0.28)';
+      ctx.font = '500 9px "Inter",Arial,sans-serif';
+      ctx.fillText('Free IELTS Academic Placement Test', LP, H - FOOT / 2);
+
+      ctx.fillStyle = WH;
+      ctx.font = '700 10.5px "Inter",Arial,sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('ieltstest.app', W - LP, H - FOOT / 2);
+
+      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     }
 
     function showToast(msg) {
