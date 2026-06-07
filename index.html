@@ -92,16 +92,17 @@
     }
 
     .lang-btn {
-      padding: 5px 11px;
-      font-size: 0.7rem;
+      padding: 5px 9px;
+      font-size: 0.68rem;
       font-weight: 800;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       border: none;
       background: transparent;
       color: var(--ink-40);
       cursor: pointer;
       transition: background var(--trans), color var(--trans);
+      white-space: nowrap;
     }
 
     .lang-btn + .lang-btn { border-left: 1px solid var(--black); }
@@ -771,6 +772,7 @@
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn"        data-lang="kz" onclick="setLang('kz')">ҚАЗ</button>
     </div>
   </header>
 
@@ -1038,6 +1040,37 @@
         'passage.lbl':        'Прочитайте текст',
         'share.text':         'Мой уровень IELTS: {CEFR} ({BAND}) — проверь свой на ieltstest.app',
         'toast.copied':       'Скопировано',
+      },
+      kz: {
+        'brand':              'IELTS Тест',
+        'start.kicker':       'Академиялық орналастыру',
+        'start.sub':          'Орналастыру тесті',
+        'start.desc':         '15 сұрақ: грамматика, лексика, оқу. Тіркелусіз. Нәтиже — 10 минутта.',
+        'start.q':            'Сұрақ',
+        'start.s':            'Бөлім',
+        'start.m':            'Минут',
+        'start.cta':          'Тестті бастау',
+        'quiz.next':          'Келесі сұрақ',
+        'quiz.prev':          'Артқа',
+        'quiz.finish':        'Нәтижені алу',
+        'quiz.exit':          'Шығу',
+        'result.kicker':      'Сіздің CEFR деңгейіңіз',
+        'result.scale':       'CEFR шкаласындағы орыңыз',
+        'result.share':       'Нәтижені бөлісу',
+        'result.prep':        'Дайындықты бастау',
+        'result.retake':      'Тестті қайталау',
+        'pts.label':          'Балл',
+        'pts.of':             'ішінен',
+        'pts.unit':           '',
+        'sec.grammar':        'Грамматика',
+        'sec.vocab':          'Лексика',
+        'sec.reading':        'Оқу',
+        'start.sec.grammar':  'Шақтар · Шартты сөйлемдер · Пассив · Жанама сөйлем · Қалау рай',
+        'start.sec.vocab':    'Синонимдер · Академиялық коллокациялар · Мәтінде сөздің мағынасы',
+        'start.sec.reading':  'Негізгі идея · Мәліметтер · Тұжырым · Автор көзқарасы',
+        'passage.lbl':        'Мәтінді оқыңыз',
+        'share.text':         'Менің IELTS деңгейім: {CEFR} ({BAND}) — өзіңіздікін тексеріңіз: ieltstest.app',
+        'toast.copied':       'Көшірілді',
       }
     };
 
@@ -1057,7 +1090,18 @@
     function setLang(l) {
       lang = l;
       applyI18n();
-      if (document.getElementById('screen-quiz').classList.contains('active')) renderQuestion();
+      if (document.getElementById('screen-quiz').classList.contains('active'))   renderQuestion();
+      if (document.getElementById('screen-result').classList.contains('active')) refreshResultLang();
+    }
+
+    function refreshResultLang() {
+      const level   = computeLevel(score);
+      const data    = LEVELS[level];
+      const comment = data.comment[lang] || data.comment.en;
+      document.getElementById('res-comment').innerHTML =
+        `<h3>${comment.title}</h3><p>${comment.body}</p>`;
+      const ptsStr = `${t('pts.label')}: ${score} ${t('pts.of')} ${MAX_SCORE}${t('pts.unit') ? ' ' + t('pts.unit') : ''}`.trim();
+      document.getElementById('res-pts').textContent = ptsStr;
     }
 
     /* =============================================
@@ -1524,23 +1568,28 @@
     const LEVELS = {
       A2: { cefr:'A2', band:'~4.0', comment:{
         en:{ title:'Elementary — Foundations', body:'Core grammar structures and high-frequency vocabulary are still being consolidated. At this stage, daily contact with English is the single most effective habit you can build. Prioritise: present, past, and future tenses; a working vocabulary of 2,000–3,000 words; and reading short texts without a dictionary.' },
-        ru:{ title:'Начальный — Основы', body:'Базовые грамматические структуры и частотная лексика ещё закрепляются. Ежедневный контакт с английским — самая эффективная привычка. Приоритеты: времена (настоящее, прошедшее, будущее), словарный запас 2 000–3 000 слов, чтение коротких текстов без словаря.' }
+        ru:{ title:'Начальный — Основы', body:'Базовые грамматические структуры и частотная лексика ещё закрепляются. Ежедневный контакт с английским — самая эффективная привычка. Приоритеты: времена (настоящее, прошедшее, будущее), словарный запас 2 000–3 000 слов, чтение коротких текстов без словаря.' },
+        kz:{ title:'Бастапқы — Негіздер', body:'Базалық грамматикалық құрылымдар мен жиі қолданылатын лексика әлі бекітілу үстінде. Күнделікті ағылшын тілімен байланыс — ең тиімді дағды. Басымдықтар: шақтар (қазіргі, өткен, келер), сөздік қор 2 000–3 000 сөз, сөздіксіз қысқа мәтіндерді оқу.' }
       }},
       B1: { cefr:'B1', band:'~5.0 – 5.5', comment:{
         en:{ title:'Intermediate — Gaining Ground', body:'You handle familiar situations, but complex grammar — conditionals, passive constructions, reported speech — introduces consistent errors. In reading, you access explicit information; inference and implicit meaning are harder. Focus next on: the Academic Word List (AWL), timed paragraph reading with comprehension questions, and structured B2 grammar practice.' },
-        ru:{ title:'Средний — Уверенный рост', body:'Вы справляетесь со знакомыми ситуациями, однако сложная грамматика — условные предложения, пассив, косвенная речь — даёт стабильные ошибки. В чтении явная информация доступна; умозаключения даются труднее. Следующий шаг: Academic Word List (AWL), чтение абзацев на время, структурированная работа над грамматикой B2.' }
+        ru:{ title:'Средний — Уверенный рост', body:'Вы справляетесь со знакомыми ситуациями, однако сложная грамматика — условные предложения, пассив, косвенная речь — даёт стабильные ошибки. В чтении явная информация доступна; умозаключения даются труднее. Следующий шаг: Academic Word List (AWL), чтение абзацев на время, структурированная работа над грамматикой B2.' },
+        kz:{ title:'Орташа — Тұрақты өсу', body:'Таныс жағдайларда еркін сөйлейсіз, бірақ күрделі грамматика — шартты сөйлемдер, пассив, жанама сөйлем — жүйелі қателерге алып келеді. Оқуда айқын ақпаратқа қол жетімді; тұжырым жасау қиынырақ. Келесі қадам: Academic Word List (AWL), уақытпен шектелген оқу жаттығулары, B2 деңгейіндегі грамматика.' }
       }},
       B2: { cefr:'B2', band:'~6.0 – 6.5', comment:{
         en:{ title:'Upper-Intermediate — Solid Platform', body:"Grammar fundamentals are reliable. Vocabulary covers most academic topics, though advanced collocations and precise word choice remain inconsistent. To reach Band 7: focus on inference and writer's attitude questions in reading; study C1 grammar (subjunctive mood, complex fronting); and actively build academic collocations through reading and writing practice." },
-        ru:{ title:'Выше среднего — Прочная платформа', body:'Грамматические основы надёжны. Словарного запаса хватает для большинства академических тем, однако продвинутые коллокации остаются непоследовательными. Для Band 7: вопросы на умозаключение и позицию автора в чтении; грамматика C1 (сослагательное наклонение, инверсии); академические коллокации.' }
+        ru:{ title:'Выше среднего — Прочная платформа', body:'Грамматические основы надёжны. Словарного запаса хватает для большинства академических тем, однако продвинутые коллокации остаются непоследовательными. Для Band 7: вопросы на умозаключение и позицию автора в чтении; грамматика C1 (сослагательное наклонение, инверсии); академические коллокации.' },
+        kz:{ title:'Орта-жоғары — Берік платформа', body:'Грамматика негіздері сенімді. Сөздік қор академиялық тақырыптардың көпшілігін қамтиды, бірақ коллокациялар тұрақсыз болып қалады. Band 7 үшін: оқудағы тұжырым және автор позициясы бойынша сұрақтар; C1 грамматикасы (қалау рай, инверсия); академиялық коллокациялар.' }
       }},
       C1: { cefr:'C1', band:'~7.0 – 7.5', comment:{
         en:{ title:'Advanced — High Competence', body:"You use English flexibly for academic and professional purposes with few structural errors. Reading comprehension is strong, including inference. To push into Band 8: precision in nuanced academic vocabulary; complex sentence structures under timed conditions; and close analysis of writer stance and implicit argument in dense specialised texts." },
-        ru:{ title:'Продвинутый — Высокая компетентность', body:'Вы гибко используете английский в академических и профессиональных целях с редкими ошибками. Понимание текстов высокое. Для Band 8+: точность в академической лексике; сложные конструкции в условиях ограниченного времени; детальный анализ позиции автора в насыщенных текстах.' }
+        ru:{ title:'Продвинутый — Высокая компетентность', body:'Вы гибко используете английский в академических и профессиональных целях с редкими ошибками. Понимание текстов высокое. Для Band 8+: точность в академической лексике; сложные конструкции в условиях ограниченного времени; детальный анализ позиции автора в насыщенных текстах.' },
+        kz:{ title:'Жоғары — Жоғары құзіреттілік', body:'Ағылшын тілін академиялық және кәсіби мақсаттарда сирек қателермен икемді пайдаланасыз. Мәтінді түсіну жоғары деңгейде. Band 8+ үшін: академиялық лексикадағы дәлдік; уақытпен шектелген жағдайдағы күрделі конструкциялар; тығыз мәтіндердегі автор позициясының егжей-тегжейлі талдауы.' }
       }},
       'C1+': { cefr:'C1+', band:'~8.0+', comment:{
         en:{ title:'Proficient — Near-Native Range', body:'You demonstrate a near-native command of English across all tested competencies. IELTS Band 8–9 is a realistic target. At this level, the exam is largely a strategic exercise. Familiarise yourself with question type patterns, timing constraints, and marking criteria. A full official practice test under exam conditions will identify any remaining performance gaps.' },
-        ru:{ title:'Компетентный — Почти родной уровень', body:'Вы демонстрируете почти родной уровень по всем компетенциям. IELTS Band 8–9 — реалистичная цель. На этом уровне экзамен — преимущественно стратегическая задача. Изучите типы вопросов, ограничения по времени и критерии оценивания. Полный практический тест выявит оставшиеся пробелы.' }
+        ru:{ title:'Компетентный — Почти родной уровень', body:'Вы демонстрируете почти родной уровень по всем компетенциям. IELTS Band 8–9 — реалистичная цель. На этом уровне экзамен — преимущественно стратегическая задача. Изучите типы вопросов, ограничения по времени и критерии оценивания. Полный практический тест выявит оставшиеся пробелы.' },
+        kz:{ title:'Жетілген — Ана тіліне жақын деңгей', body:'Барлық тексерілетін құзіреттіліктер бойынша ана тіліне жақын ағылшын тілін меңгересіз. IELTS Band 8–9 — шынайы мақсат. Бұл деңгейде емтихан негізінен стратегиялық міндет болып табылады. Сұрақ түрлерін, уақыт шектеулерін және бағалау өлшемдерін зерттеңіз. Толық тәжірибелік тест қалған олқылықтарды анықтайды.' }
       }}
     };
 
