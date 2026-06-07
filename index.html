@@ -8,6 +8,7 @@
   <meta property="og:title" content="Free IELTS Placement Test" />
   <meta property="og:description" content="15 questions. Grammar, Vocabulary, Reading. IELTS band score in 10 minutes." />
   <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#FFFFFF" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
@@ -446,9 +447,16 @@
 
     .opt:hover { border-color: var(--black); }
     .opt:hover .opt-ltr { background: var(--black); border-color: var(--black); color: var(--white); }
+    .opt:focus { outline: none; }
 
-    .opt.selected { border-color: var(--red); }
-    .opt.selected .opt-ltr { background: var(--red); border-color: var(--red); color: var(--white); }
+    .opt.selected,
+    .opt.selected:hover,
+    .opt.selected:active,
+    .opt.selected:focus { border-color: var(--red); }
+    .opt.selected .opt-ltr,
+    .opt.selected:hover .opt-ltr,
+    .opt.selected:active .opt-ltr,
+    .opt.selected:focus .opt-ltr { background: var(--red); border-color: var(--red); color: var(--white); }
 
     /* =============================================
        RESULT SCREEN
@@ -600,11 +608,22 @@
 
     /* ── Touch: swap hover→active on pointer-less devices ── */
     @media (hover: none) {
+      /* Reset desktop hover */
       .opt:hover                { border-color: var(--ink-12); }
       .opt:hover .opt-ltr       { background: transparent; border-color: var(--ink-12); color: var(--black); }
+      /* Active (finger-down) */
       .opt:active               { border-color: var(--black); }
       .opt:active .opt-ltr      { background: var(--black); border-color: var(--black); color: var(--white); }
-      .opt.selected:active .opt-ltr { background: var(--red); border-color: var(--red); }
+      /* Selected always wins — every pseudo-state combination */
+      .opt.selected,
+      .opt.selected:hover,
+      .opt.selected:active,
+      .opt.selected:focus       { border-color: var(--red); background: var(--white); }
+      .opt.selected .opt-ltr,
+      .opt.selected:hover .opt-ltr,
+      .opt.selected:active .opt-ltr,
+      .opt.selected:focus .opt-ltr { background: var(--red); border-color: var(--red); color: var(--white); }
+
       .btn-black:hover          { background: var(--black); }
       .btn-black:active         { background: var(--red); }
       .btn-outline:hover        { background: transparent; color: var(--black); }
@@ -1634,14 +1653,19 @@
       html += `<div class="q-text">${qText}</div><div class="options-list">`;
       opts.forEach((opt, i) => {
         html += `
-          <button class="opt" id="opt${i}" onclick="pickAnswer(${i})">
+          <button class="opt" id="opt${i}" data-idx="${i}">
             <span class="opt-ltr">${letters[i]}</span>
-            <span>${opt}</span>
+            <span class="opt-text">${opt}</span>
           </button>`;
       });
       html += `</div></div>`;
 
       document.getElementById('question-area').innerHTML = html;
+
+      /* Attach click listeners after DOM insertion — more reliable than onclick on Android */
+      document.querySelectorAll('#question-area .opt').forEach(btn => {
+        btn.addEventListener('click', () => pickAnswer(Number(btn.dataset.idx)));
+      });
 
       if (picked !== null) {
         document.getElementById('opt' + picked)?.classList.add('selected');
